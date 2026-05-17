@@ -6,3 +6,5 @@ with open("config.yaml") as _f:
 DATA_SOURCE_PATH = _config["source"]["path"]
 BRONZE_PATH = _config["bronze"]["path"]
 BRONZE_TABLES = _config["bronze"]["tables"]
+SILVER_PATH = _config["silver"]["path"]
+SILVER_TABLES = _config["silver"]["tables"]
