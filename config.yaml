@@ -1,2 +1,15 @@
 source:
   path: "data/"
+
+bronze:
+  path: "datamart/bronze/"
+  tables:
+    feature_clickstream:
+      partition_col: snapshot_date
+    features_attributes:
+      partition_col: snapshot_date
+    features_financials:
+      partition_col: snapshot_date
+    lms_loan_daily:
+      partition_col: snapshot_date
+
