@@ -85,10 +85,13 @@ _CLEANERS = {
 }
 
 
-def process_silver_table(table_name, table_config, bronze_path, silver_path, spark):
+def process_silver_table(table_name, table_config, bronze_path, silver_path, spark, snapshot_date_str=None):
     try:
         input_path = os.path.join(bronze_path, table_name)
         df = spark.read.format("delta").load(input_path)
+
+        if snapshot_date_str is not None:
+            df = df.filter(F.col("snapshot_date") == snapshot_date_str)
 
         df = _CLEANERS.get(table_name, lambda df: df)(df)
 
@@ -107,8 +110,13 @@ def process_silver_table(table_name, table_config, bronze_path, silver_path, spa
         partition_col = table_config["partition_col"]
         output_path = os.path.join(silver_path, table_name)
 
-        df.write.format("delta").mode("overwrite").option("overwriteSchema", "true").partitionBy(partition_col).save(output_path)
-        logger.info(f"Processed silver table {table_name}. Written to {output_path}")
+        writer = df.write.format("delta").option("overwriteSchema", "true").partitionBy(partition_col)
+        if snapshot_date_str is not None:
+            writer.mode("overwrite").option("replaceWhere", f"snapshot_date = '{snapshot_date_str}'").save(output_path)
+        else:
+            writer.mode("overwrite").save(output_path)
+
+        logger.info(f"Processed silver table {table_name} for {snapshot_date_str}. Written to {output_path}")
 
     except Exception as e:
         logger.error(e)
