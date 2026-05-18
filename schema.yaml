@@ -1,0 +1,177 @@
+source:
+  path: "data/"
+
+bronze:
+  path: "datamart/bronze/"
+  tables:
+    feature_clickstream:
+      partition_col: snapshot_date
+    features_attributes:
+      partition_col: snapshot_date
+    features_financials:
+      partition_col: snapshot_date
+    lms_loan_daily:
+      partition_col: snapshot_date
+
+silver:
+  path: "datamart/silver/"
+  tables:
+    feature_clickstream:
+      partition_col: snapshot_date
+      columns:
+        Customer_ID:
+          type: string
+          primary_key: true
+        snapshot_date:
+          type: date
+          primary_key: true
+        fe_1:
+          type: float
+        fe_2:
+          type: float
+        fe_3:
+          type: float
+        fe_4:
+          type: float
+        fe_5:
+          type: float
+        fe_6:
+          type: float
+        fe_7:
+          type: float
+        fe_8:
+          type: float
+        fe_9:
+          type: float
+        fe_10:
+          type: float
+        fe_11:
+          type: float
+        fe_12:
+          type: float
+        fe_13:
+          type: float
+        fe_14:
+          type: float
+        fe_15:
+          type: float
+        fe_16:
+          type: float
+        fe_17:
+          type: float
+        fe_18:
+          type: float
+        fe_19:
+          type: float
+        fe_20:
+          type: float
+    features_attributes:
+      partition_col: snapshot_date
+      columns:
+        Customer_ID:
+          type: string
+          primary_key: true
+        snapshot_date:
+          type: date
+          primary_key: true
+        Name:
+          type: string
+        Age:
+          type: integer
+        SSN:
+          type: string
+        Occupation:
+          type: string
+    features_financials:
+      partition_col: snapshot_date
+      columns:
+        Customer_ID:
+          type: string
+          primary_key: true
+        snapshot_date:
+          type: date
+          primary_key: true
+        Annual_Income:
+          type: float
+        Monthly_Inhand_Salary:
+          type: float
+        Num_Bank_Accounts:
+          type: integer
+        Num_Credit_Card:
+          type: integer
+        Interest_Rate:
+          type: float
+        Num_of_Loan:
+          type: integer
+        Type_of_Loan:
+          type: string
+        Delay_from_due_date:
+          type: integer
+        Num_of_Delayed_Payment:
+          type: integer
+        Changed_Credit_Limit:
+          type: float
+        Num_Credit_Inquiries:
+          type: integer
+        Credit_Mix:
+          type: string
+        Outstanding_Debt:
+          type: float
+        Credit_Utilization_Ratio:
+          type: float
+        Credit_History_Age:
+          type: string
+        Payment_of_Min_Amount:
+          type: string
+        Total_EMI_per_month:
+          type: float
+        Amount_invested_monthly:
+          type: float
+        Payment_Behaviour:
+          type: string
+        Monthly_Balance:
+          type: float
+    lms_loan_daily:
+      partition_col: snapshot_date
+      columns:
+        loan_id:
+          type: string
+          primary_key: true
+        snapshot_date:
+          type: date
+          primary_key: true
+        Customer_ID:
+          type: string
+        loan_start_date:
+          type: date
+        tenure:
+          type: integer
+        installment_num:
+          type: integer
+        loan_amt:
+          type: float
+        due_amt:
+          type: float
+        paid_amt:
+          type: float
+        overdue_amt:
+          type: float
+        balance:
+          type: float
+
+gold:
+  path: "datamart/gold/"
+  tables:
+    label_store:
+      partition_col: snapshot_date
+      columns:
+        loan_id:
+          type: string
+        Customer_ID:
+          type: string
+        label:
+          type: integer
+        label_def:
+          type: string
+        snapshot_date:
+          type: date
