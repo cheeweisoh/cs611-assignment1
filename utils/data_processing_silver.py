@@ -19,7 +19,7 @@ def _clean_features_attributes(df):
     df = df.withColumn("Name", F.trim(F.col("Name")))
 
     # Age: remove underscores, then set values outside plausible range [0, 100] to null
-    df = df.withColumn("Age", F.regexp_replace(F.col("Age").cast("string"), r"_+", ""))
+    df = df.withColumn("Age", F.regexp_replace(F.col("Age").cast("string"), r"_+", "").cast(IntegerType()))
     df = df.withColumn("Age", F.when((F.col("Age") < 0) | (F.col("Age") > 100), None).otherwise(F.col("Age")))
 
     # SSN: null out values that don't match the expected format
@@ -45,14 +45,14 @@ def _clean_features_financials(df):
     df = df.withColumn("Interest_Rate", F.when((F.col("Interest_Rate") < 0) | (F.col("Interest_Rate") > 100), None).otherwise(F.col("Interest_Rate")))
 
     # Num_of_Loan: remove underscores, then set values outside plausible range [0, 20] to null
-    df = df.withColumn("Num_of_Loan", F.regexp_replace(F.col("Num_of_Loan").cast("string"), r"_+", ""))
+    df = df.withColumn("Num_of_Loan", F.regexp_replace(F.col("Num_of_Loan").cast("string"), r"_+", "").cast(IntegerType()))
     df = df.withColumn("Num_of_Loan", F.when((F.col("Num_of_Loan") < 0) | (F.col("Num_of_Loan") > 20), None).otherwise(F.col("Num_of_Loan")))
 
     # Delay_from_due_date: set negative values to null
     df = df.withColumn("Delay_from_due_date", F.when(F.col("Delay_from_due_date") < 0, None).otherwise(F.col("Delay_from_due_date")))
 
     # Num_of_Delayed_Payment: remove underscores, then set values outside plausible range [0, 365] to null
-    df = df.withColumn("Num_of_Delayed_Payment", F.regexp_replace(F.col("Num_of_Delayed_Payment").cast("string"), r"_+", ""))
+    df = df.withColumn("Num_of_Delayed_Payment", F.regexp_replace(F.col("Num_of_Delayed_Payment").cast("string"), r"_+", "").cast(IntegerType()))
     df = df.withColumn("Num_of_Delayed_Payment", F.when((F.col("Num_of_Delayed_Payment") < 0) | (F.col("Num_of_Delayed_Payment") > 365), None).otherwise(F.col("Num_of_Delayed_Payment")))
 
     # Changed_Credit_Limit: set placeholder values consisting of underscores to null
