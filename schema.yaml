@@ -175,3 +175,186 @@ gold:
           type: string
         snapshot_date:
           type: date
+    feature_store:
+      partition_col: snapshot_date
+      columns:
+        Customer_ID:
+          type: string
+        snapshot_date:
+          type: date
+        Annual_Income:
+          type: float
+        Monthly_Inhand_Salary:
+          type: float
+        Num_Bank_Accounts:
+          type: integer
+        Num_Credit_Card:
+          type: integer
+        Interest_Rate:
+          type: float
+        Num_of_Loan:
+          type: integer
+        Type_of_Loan:
+          type: string
+        Delay_from_due_date:
+          type: integer
+        Num_of_Delayed_Payment:
+          type: integer
+        Changed_Credit_Limit:
+          type: float
+        Num_Credit_Inquiries:
+          type: integer
+        Outstanding_Debt:
+          type: float
+        Credit_Utilization_Ratio:
+          type: float
+        Total_EMI_per_month:
+          type: float
+        Amount_invested_monthly:
+          type: float
+        Monthly_Balance:
+          type: float
+        credit_history_months:
+          type: integer
+        credit_mix_encoded:
+          type: integer
+        payment_of_min_amount_encoded:
+          type: integer
+        pb_spend_level:
+          type: integer
+        pb_payment_value_level:
+          type: integer
+        debt_to_income_ratio:
+          type: float
+        emi_to_income_ratio:
+          type: float
+        Age:
+          type: integer
+        Occupation:
+          type: string
+        age_group:
+          type: integer
+        fe_1:
+          type: float
+        fe_2:
+          type: float
+        fe_3:
+          type: float
+        fe_4:
+          type: float
+        fe_5:
+          type: float
+        fe_6:
+          type: float
+        fe_7:
+          type: float
+        fe_8:
+          type: float
+        fe_9:
+          type: float
+        fe_10:
+          type: float
+        fe_11:
+          type: float
+        fe_12:
+          type: float
+        fe_13:
+          type: float
+        fe_14:
+          type: float
+        fe_15:
+          type: float
+        fe_16:
+          type: float
+        fe_17:
+          type: float
+        fe_18:
+          type: float
+        fe_19:
+          type: float
+        fe_20:
+          type: float
+        fe_sum:
+          type: float
+        fe_mean:
+          type: float
+        fe_1_mean:
+          type: float
+        fe_2_mean:
+          type: float
+        fe_3_mean:
+          type: float
+        fe_4_mean:
+          type: float
+        fe_5_mean:
+          type: float
+        fe_6_mean:
+          type: float
+        fe_7_mean:
+          type: float
+        fe_8_mean:
+          type: float
+        fe_9_mean:
+          type: float
+        fe_10_mean:
+          type: float
+        fe_11_mean:
+          type: float
+        fe_12_mean:
+          type: float
+        fe_13_mean:
+          type: float
+        fe_14_mean:
+          type: float
+        fe_15_mean:
+          type: float
+        fe_16_mean:
+          type: float
+        fe_17_mean:
+          type: float
+        fe_18_mean:
+          type: float
+        fe_19_mean:
+          type: float
+        fe_20_mean:
+          type: float
+        fe_1_std:
+          type: float
+        fe_2_std:
+          type: float
+        fe_3_std:
+          type: float
+        fe_4_std:
+          type: float
+        fe_5_std:
+          type: float
+        fe_6_std:
+          type: float
+        fe_7_std:
+          type: float
+        fe_8_std:
+          type: float
+        fe_9_std:
+          type: float
+        fe_10_std:
+          type: float
+        fe_11_std:
+          type: float
+        fe_12_std:
+          type: float
+        fe_13_std:
+          type: float
+        fe_14_std:
+          type: float
+        fe_15_std:
+          type: float
+        fe_16_std:
+          type: float
+        fe_17_std:
+          type: float
+        fe_18_std:
+          type: float
+        fe_19_std:
+          type: float
+        fe_20_std:
+          type: float
