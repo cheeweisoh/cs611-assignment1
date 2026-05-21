@@ -5,18 +5,24 @@ bronze:
   path: "datamart/bronze/"
   tables:
     feature_clickstream:
+      table_dir: feature_clickstream_raw
       partition_col: snapshot_date
     features_attributes:
+      table_dir: features_attributes_raw
       partition_col: snapshot_date
     features_financials:
+      table_dir: features_financials_raw
       partition_col: snapshot_date
     lms_loan_daily:
+      table_dir: lms_loan_daily_raw
       partition_col: snapshot_date
 
 silver:
   path: "datamart/silver/"
   tables:
     feature_clickstream:
+      table_dir: feature_clickstream_cleaned
+      source_dir: feature_clickstream_raw
       partition_col: snapshot_date
       columns:
         Customer_ID:
@@ -66,6 +72,8 @@ silver:
         fe_20:
           type: float
     features_attributes:
+      table_dir: features_attributes_cleaned
+      source_dir: features_attributes_raw
       partition_col: snapshot_date
       columns:
         Customer_ID:
@@ -83,6 +91,8 @@ silver:
         Occupation:
           type: string
     features_financials:
+      table_dir: features_financials_cleaned
+      source_dir: features_financials_raw
       partition_col: snapshot_date
       columns:
         Customer_ID:
@@ -132,6 +142,8 @@ silver:
         Monthly_Balance:
           type: float
     lms_loan_daily:
+      table_dir: lms_loan_daily_cleaned
+      source_dir: lms_loan_daily_raw
       partition_col: snapshot_date
       columns:
         loan_id:
@@ -163,6 +175,7 @@ gold:
   path: "datamart/gold/"
   tables:
     label_store:
+      silver_source: lms_loan_daily_cleaned
       partition_col: snapshot_date
       columns:
         loan_id:
@@ -176,6 +189,10 @@ gold:
         snapshot_date:
           type: date
     feature_store:
+      silver_sources:
+        attributes: features_attributes_cleaned
+        financials: features_financials_cleaned
+        clickstream: feature_clickstream_cleaned
       partition_col: snapshot_date
       columns:
         Customer_ID:

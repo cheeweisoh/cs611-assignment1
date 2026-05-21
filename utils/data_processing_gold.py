@@ -17,7 +17,7 @@ _TYPE_MAP = {
 
 def process_labels_gold_table(table_name, table_config, silver_path, gold_path, mob, dpd, spark, snapshot_date_str=None):
     try:
-        input_path = os.path.join(silver_path, table_name)
+        input_path = os.path.join(silver_path, table_config["silver_source"])
         df = spark.read.format("delta").load(input_path)
 
         if snapshot_date_str is not None:
@@ -172,17 +172,17 @@ def process_features_gold_table(table_config, silver_path, gold_path, spark, sna
         partition_col = table_config["partition_col"]
         output_path = os.path.join(gold_path, "feature_store")
 
-        attributes_df = spark.read.format("delta").load(os.path.join(silver_path, "features_attributes"))
+        attributes_df = spark.read.format("delta").load(os.path.join(silver_path, table_config["silver_sources"]["attributes"]))
         if snapshot_date_str is not None:
             attributes_df = attributes_df.filter(F.col("snapshot_date") == snapshot_date_str)
         attributes_df_features = _build_attribute_features(attributes_df)
 
-        financials_df = spark.read.format("delta").load(os.path.join(silver_path, "features_financials"))
+        financials_df = spark.read.format("delta").load(os.path.join(silver_path, table_config["silver_sources"]["financials"]))
         if snapshot_date_str is not None:
             financials_df = financials_df.filter(F.col("snapshot_date") == snapshot_date_str)
         financials_df_features = _build_financial_features(financials_df)
 
-        clickstream_df = spark.read.format("delta").load(os.path.join(silver_path, "feature_clickstream"))
+        clickstream_df = spark.read.format("delta").load(os.path.join(silver_path, table_config["silver_sources"]["clickstream"]))
         clickstream_features_df = _build_clickstream_features(clickstream_df, snapshot_date_str)
 
         feature_df = financials_df_features.join(attributes_df_features.drop("snapshot_date"), on="Customer_ID", how="left")

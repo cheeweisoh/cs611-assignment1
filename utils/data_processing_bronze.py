@@ -15,7 +15,7 @@ def process_bronze_table(table_name, table_config, source_path, bronze_path, spa
             df = df.filter(F.col("snapshot_date") == snapshot_date_str)
 
         partition_col = table_config["partition_col"]
-        output_path = os.path.join(bronze_path, table_name)
+        output_path = os.path.join(bronze_path, table_config["table_dir"])
 
         writer = df.write.format("delta").option("mergeSchema", "true").partitionBy(partition_col)
         if snapshot_date_str is not None:

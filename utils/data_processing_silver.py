@@ -87,7 +87,7 @@ _CLEANERS = {
 
 def process_silver_table(table_name, table_config, bronze_path, silver_path, spark, snapshot_date_str=None):
     try:
-        input_path = os.path.join(bronze_path, table_name)
+        input_path = os.path.join(bronze_path, table_config["source_dir"])
         df = spark.read.format("delta").load(input_path)
 
         if snapshot_date_str is not None:
@@ -108,7 +108,7 @@ def process_silver_table(table_name, table_config, bronze_path, silver_path, spa
         logger.info(f"{table_name}: dropped {before_count - after_count} duplicate(s) on {primary_keys}")
 
         partition_col = table_config["partition_col"]
-        output_path = os.path.join(silver_path, table_name)
+        output_path = os.path.join(silver_path, table_config["table_dir"])
 
         writer = df.write.format("delta").option("overwriteSchema", "true").partitionBy(partition_col)
         if snapshot_date_str is not None:
