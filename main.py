@@ -1,3 +1,5 @@
+import argparse
+import logging
 import os
 from datetime import datetime
 
@@ -11,6 +13,22 @@ from utils.data_processing_bronze import process_bronze_table
 from utils.data_processing_gold import (process_features_gold_table,
                                         process_labels_gold_table)
 from utils.data_processing_silver import process_silver_table
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "--log-level",
+    default="INFO",
+    choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+    help="Set the logging level (default: INFO)",
+)
+args = parser.parse_args()
+
+logging.basicConfig(
+    level=getattr(logging, args.log_level),
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+logger = logging.getLogger(__name__)
 
 # Initialise SparkSession with Delta Lake extensions
 builder = (
@@ -52,18 +70,31 @@ def generate_first_of_month_dates(start_date_str, end_date_str):
 
 
 dates_str_lst = generate_first_of_month_dates(START_DATE, END_DATE)
+logger.info(f"Pipeline started | date range: {START_DATE} to {END_DATE} ({len(dates_str_lst)} months)")
 
 # bronze backfill
+logger.info("Starting bronze backfill")
 for date_str in dates_str_lst:
     for table_name, table_config in BRONZE_TABLES.items():
+        logger.debug(f"Bronze: processing {table_name} for {date_str}")
         process_bronze_table(table_name, table_config, DATA_SOURCE_PATH, BRONZE_PATH, spark, date_str)
+logger.info("Bronze backfill complete")
 
 # silver backfill
+logger.info("Starting silver backfill")
 for date_str in dates_str_lst:
     for table_name, table_config in SILVER_TABLES.items():
+        logger.debug(f"Silver: processing {table_name} for {date_str}")
         process_silver_table(table_name, table_config, BRONZE_PATH, SILVER_PATH, spark, date_str)
+logger.info("Silver backfill complete")
 
 # gold backfill
+logger.info("Starting gold backfill")
 for date_str in dates_str_lst:
+    logger.debug(f"Gold: processing label store for {date_str}")
     process_labels_gold_table("lms_loan_daily", GOLD_TABLES["label_store"], SILVER_PATH, GOLD_PATH, MOB_VALUE, DPD_VALUE, spark, date_str)
+    logger.debug(f"Gold: processing feature store for {date_str}")
     process_features_gold_table(GOLD_TABLES["feature_store"], SILVER_PATH, GOLD_PATH, spark, date_str)
+logger.info("Gold backfill complete")
+
+logger.info("Pipeline finished")
